@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Library.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Library.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
     {
@@ -12,8 +13,10 @@ namespace Library.DataAccess.Data
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Category>().HasData(
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>().HasData(
             new Category { Id = 1, CategoryName = "Action", DisplayOrder = 1 },
             new Category { Id = 2, CategoryName = "SciFi", DisplayOrder = 2 },
             new Category { Id = 3, CategoryName = "History", DisplayOrder = 3 }
